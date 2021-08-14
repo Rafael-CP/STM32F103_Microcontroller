@@ -1,0 +1,30 @@
+;========= EXERCICIO 5 ========= VN + VN
+		EXPORT 	__main
+			
+		AREA 	M_DADOS, DATA,	READWRITE		
+g1		SPACE	1
+h1		SPACE	1
+r1b		SPACE	1
+r2b		SPACE	2
+	
+		AREA 	M_PROGRAMA, CODE, READONLY
+__main	
+pk0		LDR		R0,=g1
+		LDRB	R1,[R0]
+		ADD		R0,#1
+		LDRB	R2,[R0]
+		LSL		R1,R1,#24	; DESLOCA VALORES PARA BYTE MAIS A ESQUERDA
+		LSL		R2,R2,#24
+		ADDS	R3,R2,R1
+		BVS		pk2
+pk1		ADD		R0,#1
+		LSR		R3,R3,#24
+		STRB	R3,[R0]
+		B		pk0
+pk2		ADD		R0,#2
+		LSR		R3,R3,#24
+		MOV		R2,#&FF00
+		ADD		R3,R2
+		STRH	R3,[R0]
+		B		pk0
+		END

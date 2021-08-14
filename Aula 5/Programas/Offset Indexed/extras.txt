@@ -1,0 +1,139 @@
+;========EXERCICIO 1D ==========
+		EXPORT __main
+			
+		AREA 	M_DADOS, DATA, READWRITE
+vr1		space	8
+vr2		space	8	
+	
+		AREA 	M_PROGRAM, CODE, READONLY
+__main
+		LDR		r0,=vr1
+		MOV		r1, #8
+pk1		LDRSB	r2,[r0]
+		STRB	r2,[r0, #8]
+		ADD		r0,#1
+		SUBS	r1,#1
+		BNE		pk1
+		B		__main		
+		END
+		
+;========EXERCICIO 1D EXTRA ==========
+		EXPORT	__main
+		AREA 	EXTRA, DATA, READONLY
+extra	dcd		&AABBCCDD
+	
+		AREA	M_DADOS, DATA, READWRITE
+vr1		space	8
+vr3		space	4
+vr2		space	8	
+
+	
+		AREA 	M_PROGRAM, CODE, READONLY
+__main
+		LDR		r0,=vr2
+		STR		r0,[r3]
+		MOV		r1, #8	; contador
+pk1		LDRSB	r2,[r0]	
+		STRB	r2,[r0, #-12]
+		ADD		r0, #1
+		SUBS	r1, #1
+		BNE		pk1
+		
+		LDR		r0,=vr1
+		LDR		r1,=extra
+		LDR		r2,[r1]
+		STR		r2,[r0, #8]
+		
+		B		__main		
+		END
+
+;========EXERCICIO 1E ==========
+		EXPORT __main
+			
+dst		EQU		vr2-vr1
+	
+		AREA 	M_DADOS, DATA, READWRITE
+vr1		space	8
+testw	dcb		&a7, &3b, &c5
+testz	dcw		&39af, &b287
+vr2		space	8	
+	
+		AREA 	M_PROGRAM, CODE, READONLY
+__main
+		LDR		r0,=vr1
+		MOV		r1, #8
+pk1		LDRSB	r2,[r0]
+		STRB	r2,[r0, #dst]
+		ADD		r0,#1
+		SUBS	r1,#1
+		BNE		pk1
+		B		__main		
+		END
+
+;========EXERCICIO 1E ==========
+		EXPORT __main
+			
+dst		EQU		vr2-vr1
+	
+		AREA 	M_DADOS, DATA, READWRITE
+vr1		space	8
+testw	dcb		&a7, &3b, &c5
+testz	dcw		&39af, &b287
+vr2		space	8	
+	
+		AREA 	M_PROGRAM, CODE, READONLY
+__main
+		LDR		r0,=vr1
+		MOV		r1, #8
+pk1		LDRSB	r2,[r0, #7]
+		STRB	r2,[r0, #dst+7]
+		SUB		r0,#1
+		SUBS	r1,#1
+		BNE		pk1
+		B		__main		
+		END
+
+;========EXERCICIO 1F ==========
+		EXPORT __main
+			
+dst		EQU		vr2-vr1
+	
+		AREA 	M_DADOS, DATA, READWRITE
+vr1		space	8
+testz	dcw		&39af, &b287
+vr2		space	8	
+	
+		AREA 	M_PROGRAM, CODE, READONLY
+__main
+		LDR		r0,=vr1-1
+		MOV		r1, #8
+pk1		LDRSB	r2,[r0, #1]!
+		STRB	r2,[r0, #dst]
+;		ADD		r0,#1 ;NÃO É MAIS NECESSARIO
+		SUBS	r1,#1
+		BNE		pk1
+		B		__main		
+		END
+
+;========EXERCICIO 1F EXTRA ==========
+		EXPORT __main
+			
+dst		EQU		vr2-vr1
+	
+		AREA 	M_DADOS, DATA, READWRITE
+vr1		space	8
+testz	dcw		&39af, &b287
+vr2		space	8	
+	
+		AREA 	M_PROGRAM, CODE, READONLY
+__main
+		LDR		r0,=vr1+8
+		MOV		r1, #8
+pk1		LDRSB	r2,[r0, #-1]!
+		STRB	r2,[r0, #dst]
+;		ADD		r0,#1 ;NÃO É MAIS NECESSARIO
+		SUBS	r1,#1
+		BNE		pk1
+		B		__main		
+		END
+		

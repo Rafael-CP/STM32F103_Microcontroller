@@ -1,0 +1,18 @@
+;Ex_13.2a - uso systick timer
+; 
+;Arquivo “startup_stm32f10x_md.s”
+;comentar => linhas 133,134
+; 			LDR R0, =SystemInit
+; 			BLX R0
+;comentar => linhas 178-181
+;SysTick_Handler PROC
+;				EXPORT SysTick_Handler [WEAK]
+; 				B .
+; 				ENDP
+;após a linha 181 inserir:
+SysTick_Handler PROC
+				EXPORT SysTick_Handler [WEAK]
+	import 		__isrST
+	ldr 	r5,=__isrST
+	bx 		r5
+				ENDP

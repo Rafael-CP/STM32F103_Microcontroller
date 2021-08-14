@@ -1,0 +1,27 @@
+			EXPORT __main
+				
+
+BIN		EQU		2_1001110001000000 
+OCT		EQU		8_127710
+DEC		EQU		38000 
+HEX		EQU		0x88
+BINADD	EQU		2_1101101
+
+		AREA	M_PROG, CODE, READONLY
+__main
+		MOV	 R0, #HEX
+		MOV  R1, #123 ;27 EM HEX
+		MOVT R2, #BIN ;Assemblador transforma MOV em MOVW sozinho
+		MOVT R3, #OCT
+		MOVT R4, #DEC
+		MOVW R5, #0x9C40 ;3a
+		MOVT R6, #0xFA00 ;4a
+		mov    r0, #&197
+		add    r0, #237			
+		ADD  R0, #78
+		ADD  R1, #23
+		ADD  R2, #BINADD
+	
+AQUI 	B		AQUI	 	;LOOP INFINITO	
+		END					;FECHAMENTO DO ARQUIVO
+

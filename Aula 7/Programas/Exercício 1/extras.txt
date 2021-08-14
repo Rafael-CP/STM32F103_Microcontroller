@@ -1,0 +1,130 @@
+;---Ex-1a - multiply instructions 16x16 bits
+		export __main
+;---directive area-programa
+		area m_prog, code, readonly
+__main
+		movw 	r0,#65535 ;r0=&ffff
+		movw 	r1,#65535 ;r1=&ffff
+		mul 	r2,r0,r1 ;R2=r0*r1=&fffe0001
+		movw 	r3,#0 ;r3=65536
+		movt 	r3,#1 ;r3=&10000
+		movw 	r4,#65535 ;r4=&ffff
+		mul 	r5,r3,r4 ;R5=&ffff0000
+		mov 	r6,r3 ;r6=r3=&10000
+		mov 	r7,r3 ;r7=r3=&10000
+		mul 	r8,r6,r7 ;r8=&00000000
+pk0 	b 		pk0
+		end
+		
+;---Ex-1b - multiply instructions 32x32 bits
+		export __main
+;---directive area-programa
+		area m_prog, code, readonly
+__main
+		movw 	r0,#65535 	;r0Lo=&ffff
+		movt 	r0,#65535 	;r0Hi=&ffff
+		mov 	r1,r0 		;r1=r0
+		umull 	r2,r3,r0,r1 ;r2 = menos significativo / r3 = mais significativo
+pk0 	b 		pk0			;=&fffffffe0000001
+		end		
+		
+;---Ex_1c - mult. vetor*vk
+		export __main
+;---diretiva area-dados1
+		area 	d_1, data, readonly
+vt1 	dcb 	&aa,&39,&ca,&f3,&e5,&99,&fe,&c9
+vk 		dcb 	&d9
+;---diretiva area-dados2 -sram
+		area 	d_2, data, readwrite
+vtk 	space	16
+;---directive area-programa
+		area 	m_prog, code, readonly
+__main
+pk0 	ldr 	r0,=vt1 	;r0=&vt1
+		ldr 	r1,=vtk 	;r1=&vtk
+		mov 	r2,#8 		;cont.
+		ldrb 	r3,[r0,#8]	;r3=vk
+pk1 	ldrb 	r4,[r0] 	;r4=vt(i)
+		mul 	r5,r3,r4
+		strh 	r5,[r1]
+		add 	r0,#1
+		add 	r1,#2
+		subs 	r2,#1
+		bne 	pk1 
+		b 		pk0 
+		end
+;---Ex_1d - mult. pos incr
+		export 	__main
+;---diretiva area-dados1
+		area 	d_1, data, readonly
+vt1 	dcb 	&aa,&39,&ca,&f3,&e5,&99,&fe,&c9
+vk 		dcb 	&d9
+;---diretiva area-dados2 -sram
+		area 	d_2, data, readwrite
+vtk 	space	16
+;---directive area-programa
+		area 	m_prog, code, readonly
+__main
+pk0 	ldr 	r0,=vt1 		;r0=&vt1
+		ldr 	r1,=vtk 		;r1=&vtk
+		mov		r2,r1
+		add		r2,#16
+		ldrb 	r3,[r0,#8]		;r3=vk
+pk1 	ldrb 	r4,[r0],#1 		;r4=vt(i) com pós incremento
+		mul 	r5,r3,r4
+		strh 	r5,[r1],#2		;pós incremento
+		cmp		r1,r2
+		bne 	pk1 
+		b 		pk0 
+		end		
+
+;---Ex_1c - mult. vetor*vk pre incr
+		export 	__main
+;---diretiva area-dados1
+		area 	d_1, data, readonly
+vt1 	dcb 	&aa,&39,&ca,&f3,&e5,&99,&fe,&c9
+vk 		dcb 	&d9
+;---diretiva area-dados2 -sram
+		area 	d_2, data, readwrite
+vtk 	space	16
+;---directive area-programa
+		area 	m_prog, code, readonly
+__main
+pk0 	ldr 	r0,=vt1-1 		;r0=&vt1
+		ldr 	r1,=vtk-2 		;r1=&vtk
+		mov		r2,r1
+		add		r2,#16
+		ldrb 	r3,[r0,#9]		;r3=vk
+pk1 	ldrb 	r4,[r0,#1]! 	;r4=vt(i) com pré incremento
+		mul 	r5,r3,r4
+		strh 	r5,[r1,#2]!		;pré incremento
+		cmp		r1,r2
+		bne 	pk1 
+		b 		pk0 
+		end
+
+;---Ex_1e - mult. vt1*vt2 pos incr
+		export 	__main
+;---diretiva area-dados -sram
+		area 	d_2, data, readwrite
+vt1 	space	8
+vt2		space	8
+vtk		space	16
+;---directive area-programa
+		area 	m_prog, code, readonly
+__main
+pk0 	ldr 	r0,=vt1 		;r0=&vt1
+		ldr 	r1,=vt2 		;r1=&vt1
+		ldr		r2,=vtk			;r2=&vtk
+		mov		r3,r0			;contador
+		add		r3,#8	
+pk1 	ldrh	r4,[r0]
+		ldrh	r5,[r1]
+		mul 	r6,r4,r5
+		str 	r6,[r2],#4		;pos incremento
+		add		r0,#2
+		add		r1,#2
+		cmp		r0,r3
+		bne 	pk1 
+		b 		pk0 
+		end

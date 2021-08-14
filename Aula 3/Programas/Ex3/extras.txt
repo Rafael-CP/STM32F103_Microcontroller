@@ -1,0 +1,65 @@
+;==========EXERCICIO 3.0============
+EXPORT 	__main
+;===================================			
+		AREA 	DADOS, DATA, READWRITE ;TROCANDO O READWRITE PARA QUE NAO SEJA PRECISO ESCREVER OS DADOS NA RAM MANUALMENTE
+ct1		dcb		&33, &77 
+ct2		dcb		&aa, &80
+;===================================
+		AREA	PROGRAMA, CODE, READONLY
+__main
+pk0		LDR		r0,=ct1
+		LDRSB	r1,[r0]
+		LDRSH	r2,[r0]
+		NOP
+		LDR		r0,=ct2
+		LDRSB	r3,[r0]
+		LDRSH 	r4,[r0]
+		NOP
+LOOP	B	LOOP
+		END
+
+;==========EXERCICIO 3.1============
+		EXPORT 	__main
+;===================================			
+		AREA 	DADOS, DATA, READONLY ;TROCANDO O READWRITE PARA QUE NAO SEJA PRECISO ESCREVER OS DADOS NA RAM MANUALMENTE
+ct1		dcb		&33
+ct2		dcb		&77
+ct3		dcb		&aa
+ct4		dcb		&80
+;===================================
+		AREA	PROGRAMA, CODE, READONLY
+__main
+pk0		LDR		r0,=ct1
+		LDRSB	r1,[r0]
+		NOP
+		LDR		r0,=ct2
+		LDRSB	r2,[r0]
+		NOP
+		LDR		r0,=ct3
+		LDRSB	r3,[r0]
+		NOP
+		LDR		r0,=ct4
+		LDRSB 	r4,[r0]
+		NOP
+LOOP	B	LOOP
+		END
+
+;==========EXERCICIO 3.2============
+		EXPORT 	__main
+;===================================			
+		AREA 	DADOS, DATA, READONLY ;TROCANDO O READWRITE PARA QUE NAO SEJA PRECISO ESCREVER OS DADOS NA RAM MANUALMENTE
+ct1		dcb		&33, &77, &32, &ac
+ct2		dcb		&aa, &80, &3A, &dc
+;===================================
+		AREA	PROGRAMA, CODE, READONLY
+__main
+pk0		LDR		r0,=ct1
+		LDRSH	r1,[r0]
+		LDRSH	r2,[r0]
+		NOP
+		LDR		r0,=ct2
+		LDRSH	r3,[r0]
+		LDRSH 	r4,[r0]
+		NOP
+LOOP	B	LOOP
+		END

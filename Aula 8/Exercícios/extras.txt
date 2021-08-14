@@ -1,0 +1,68 @@
+;---Ex_8.3a - pass.par. regs./reference
+		export 	__main
+;---diret. area dados
+		area 	dds1, data, readwrite
+m1 		space 	1 	;valor1
+n1 		space 	1
+mn2 	space 	2 	;max entre 1-2
+;---diret. area - progr.
+		area mprg, code, readonly
+__main
+pkg 	ldr 	r0,=m1
+		bl 		sqd
+		push 	{r2}
+		bl 		sqd
+		push 	{r2}
+;---soma dos quadrados
+		mov 	r3,#2
+		mov 	r2,#0
+pkf 	pop 	{r1}
+		add 	r2,r1
+		subs 	r3,#1
+		bne 	pkf
+		strh r2,[r0]
+		b 		pkg
+;---sub-rotina (eleva ao quadrado)
+sqd 	push 	{r1}
+		ldrb 	r1,[r0],#1
+		mov 	r2,r1
+		mul 	r2,r1,r2
+		pop 	{r1}
+		bx 		r14
+;---
+end
+
+;---Ex_8.3a - pass.par. regs./reference EXTRA
+		export 	__main 
+tam		EQU		4
+;---diret. area dados
+		area 	dds1, data, readwrite
+m 		space 	tam 	; valores
+Sm	 	space 	2 		; soma 
+;---diret. area - progr.
+		area mprg, code, readonly
+__main
+pkg 	ldr 	r0,=m
+		mov		r5,#tam	; contador
+loop	bl 		sqd
+		push 	{r2}
+		subs	r5,#1
+		bne		loop
+;---soma dos quadrados
+		mov 	r3,#tam
+		mov 	r2,#0
+pkf 	pop 	{r1}
+		add 	r2,r1
+		subs 	r3,#1
+		bne 	pkf
+		strh 	r2,[r0]
+		b 		pkg
+;---sub-rotina (eleva ao quadrado)
+sqd 	push 	{r1}
+		ldrb 	r1,[r0],#1
+		mov 	r2,r1
+		mul 	r2,r1,r2
+		pop 	{r1}
+		bx 		r14
+;---
+end
